@@ -1,10 +1,10 @@
 version: '3'
 services:
   app:
-    image: mihirinventam/docker-multistage:latest
-    container_name: testmultistage-app
+    image: mihirinventam/github-workflow:latest
+    container_name: github-workflow
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
       DB_HOST: mysqldb  # This should match the database container name
       DB_PORT: 3306
       DB_USER: root
@@ -13,7 +13,7 @@ services:
     depends_on:
       - mysqldb
     ports:
-      - "8080:8080"  # Exposing app port
+      - "9999:9999"  # Exposing app port
     restart: always
 
   mysqldb:
