@@ -34,15 +34,20 @@ jobs:
           REMOTE_HOST: ${{ secrets.AWS_HOST_TEMP }}
           REMOTE_USER: ${{ secrets.AWS_USER_TEMP }}
           DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE_TEMP }}  # Use the image built above
-
+      
       - name: Execute remote commands
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AWS_HOST_TEMP }}
           username: ${{ secrets.AWS_USER_TEMP }}
-          key: ${{ secrets.AWS_SECRET_KEY }}  # Ensure you are using the correct private key
+          key: ${{ secrets.AWS_SECRET_KEY }}
           script: |
             echo "Deploying to EC2 instance..."
+            echo "Docker Image: $DOCKER_IMAGE"  # Debugging line
+            # Ensure Docker Compose is installed
+            sudo apt-get update
+            sudo apt-get install -y docker-compose
+            
             # Pull the latest image
             docker pull $DOCKER_IMAGE
 
