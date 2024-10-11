@@ -29,6 +29,7 @@ jobs:
 
       - name: Deploy to EC2
         env:
+          SSH_PRIVATE_KEY: ${{ secrets.AWS_SECRET_KEY }}
           EC2_HOST: ${{ secrets.AWS_HOST_TEMP }}
           EC2_USER: ${{ secrets.AWS_USER_TEMP }}
           DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }}
