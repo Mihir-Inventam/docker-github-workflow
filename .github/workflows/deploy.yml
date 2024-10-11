@@ -26,8 +26,8 @@ jobs:
         run: |
           echo "Building the Docker image..."
           ls
-          docker build -t temp-dockerimage .
-          docker push temp-dockerimage
+          docker build -t mihirinventam/github-workflow:latest .
+          docker push mihirinventam/github-workflow:latest
 
       - name: SSH connection with AWS EC2 instance
         uses: easingthemes/ssh-deploy@main
