@@ -1,0 +1,27 @@
+version: '3'
+services:
+  app:
+    image: mihirinventam/docker-multistage:latest
+    container_name: testmultistage-app
+    environment:
+      NODE_ENV: production
+      DB_HOST: mysqldb  # This should match the database container name
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: yourpassword
+      DB_NAME: yourdbname
+    depends_on:
+      - mysqldb
+    ports:
+      - "8080:8080"  # Exposing app port
+    restart: always
+
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqldb
+    environment:
+      MYSQL_ROOT_PASSWORD: yourpassword
+      MYSQL_DATABASE: yourdbname
+    ports:
+      - "3306:3306"  # Exposing MySQL port
+    restart: always
