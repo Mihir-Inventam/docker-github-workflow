@@ -24,10 +24,11 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_IMAGE_TEMP }} .
-          docker push ${{ secrets.DOCKER_IMAGE_TEMP }}
+          echo "Building the Docker image..."
+          ls
+          docker build -t temp-dockerimage .
+          docker push temp-dockerimage
 
-          
       - name: SSH connection with AWS EC2 instance
         uses: easingthemes/ssh-deploy@main
         with:
