@@ -1,9 +1,9 @@
-name: Deploy to AWS EC2
+name: Docker Deployment
 
 on:
   push:
     branches:
-      - main  # Change this if your default branch is different.
+      - main
 
 jobs:
   deploy:
@@ -30,21 +30,24 @@ jobs:
       - name: SSH connection with AWS EC2 instance
         uses: easingthemes/ssh-deploy@main
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.AWS_SECRET_KEY }}  # Make sure this contains the private key, not the AWS secret key
+          SSH_PRIVATE_KEY: ${{ secrets.AWS_SECRET_KEY }}  # Ensure this is the private key
           REMOTE_HOST: ${{ secrets.AWS_HOST_TEMP }}
           REMOTE_USER: ${{ secrets.AWS_USER_TEMP }}
-          DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }}
+          DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE_TEMP }}  # Use the image built above
 
-      - name: Deployment 
-        run: |
-          echo "Deploying to EC2 instance..."
-          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER_TEMP }}@${{ secrets.AWS_HOST_TEMP }} << 'EOF'
-          # Pull the latest image
-          docker pull $DOCKER_IMAGE
+      - name: Execute remote commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST_TEMP }}
+          username: ${{ secrets.AWS_USER_TEMP }}
+          key: ${{ secrets.AWS_SECRET_KEY }}  # Ensure you are using the correct private key
+          script: |
+            echo "Deploying to EC2 instance..."
+            # Pull the latest image
+            docker pull $DOCKER_IMAGE
 
-          # Stop and remove the existing container if it exists
-          docker-compose down
+            # Stop and remove the existing container if it exists
+            docker-compose down
 
-          # Start the new container
-          docker-compose up -d
-          EOF
+            # Start the new container
+            docker-compose up -d
