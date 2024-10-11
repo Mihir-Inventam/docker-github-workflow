@@ -45,13 +45,13 @@ jobs:
           key: ${{ secrets.AWS_SECRET_KEY }}
           script: |
             echo "Deploying to EC2 instance..."
-            echo "Docker Image: $DOCKER_IMAGE"  # Debugging line
+            echo "Docker Image: mihirinventam/github-workflow:latest"  # Debugging line
             # Ensure Docker Compose is installed
             sudo apt-get update
             sudo apt-get install -y docker-compose
             
             # Pull the latest image
-            docker pull $DOCKER_IMAGE
+            docker pull mihirinventam/github-workflow:latest
 
             # Stop and remove the existing container if it exists
             docker-compose down
