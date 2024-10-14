@@ -1,0 +1,43 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches:
+      - main  # This workflow triggers on push to the 'main' branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # Or the version you're using
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application (if necessary)
+        run: npm run build  # Optional: Run the build script if your project requires it
+
+      - name: Sync files to S3
+        env:
+#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          aws s3 sync . s3://${{ secrets.AWS_BUCKET_NAME }} --exclude ".git/*" --exclude "node_modules/*" --delete
+        shell: bash
+
+      - name: Invalidate CloudFront (Optional)
+        if: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID != '' }}
+        env:
+#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
