@@ -2,7 +2,8 @@ name: aaa-cms CICD Pipeline
 
 on:
   push:
-    branches: [develop]
+    branches: 
+      - develop
 
 jobs:
   build_and_deploy:
@@ -10,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout the repo
-        uses: actions/checkout@v2
+        uses: actions/setup-node@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20.16
 
@@ -23,7 +24,7 @@ jobs:
       - name: Extract branch name
         shell: bash
         run: |
-          echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+          echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
         id: extract_branch
 
       - name: generate env
@@ -105,7 +106,7 @@ jobs:
           else
             echo "DEPLOY=false" >> $GITHUB_ENV
           fi
-          ls -a
+          ls -la
           cat .env
 
       - name: npm build
