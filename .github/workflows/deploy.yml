@@ -3,7 +3,7 @@ name: temp ssh with server
 on:
   push:
     branches:
-      - main
+      - #main
 
 jobs:
   deploy:
