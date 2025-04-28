@@ -14,8 +14,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: SSH connection with Azure VM
-        uses: easingthemes/ssh-deploy@main
+        uses: appleboy/ssh-action@v0.1.10
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.AZURE_VM_PASSWORD }}
-          REMOTE_HOST: ${{ secrets.AZURE_HOST }}
-          REMOTE_USER: ${{ secrets.AZURE_USER }}
+          host: ${{ secrets.AZURE_HOST }}
+          username: ${{ secrets.AZURE_USER }}
+          password: ${{ secrets.AZURE_VM_PASSWORD }}
