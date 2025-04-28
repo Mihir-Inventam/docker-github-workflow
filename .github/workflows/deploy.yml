@@ -19,3 +19,8 @@ jobs:
           host: ${{ secrets.AZURE_HOST }}
           username: ${{ secrets.AZURE_USER }}
           password: ${{ secrets.AZURE_VM_PASSWORD }}
+          SOURCE: './'
+          TARGET: /home/mihir31/temp-dir/
+          script: |
+            cd /home/mihir31/temp-dir/
+            echo "Hello this is Mihir & this is test file" >> test.txt
