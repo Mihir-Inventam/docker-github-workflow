@@ -3,7 +3,7 @@ name: temp ssh with server
 on:
   push:
     branches:
-      - develop
+      - main
 
 jobs:
   deploy:
@@ -13,9 +13,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: SSH connection with AWS EC2 instance
+      - name: SSH connection with Azure VM
         uses: easingthemes/ssh-deploy@main
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.AWS_SECRET_KEY }}
-          REMOTE_HOST: ${{ secrets.AWS_HOST }}
-          REMOTE_USER: ${{ secrets.AWS_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.AZURE_VM_PASSWORD }}
+          REMOTE_HOST: ${{ secrets.AZURE_HOST }}
+          REMOTE_USER: ${{ secrets.AZURE_USER }}
