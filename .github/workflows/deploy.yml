@@ -10,14 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: SSH connection with hostinger VPS
+      - name: SSH connection with Hostinger VPS
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
-          SOURCE: './'
-          TARGET: /root/
+          port: 22  # Optional: specify if non-default
           script: |
             cd /root/
             echo "Hello this is Mihir & this is test file" >> test.txt
