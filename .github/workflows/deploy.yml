@@ -10,17 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: SSH connection with Azure VM
+      - name: SSH connection with hostinger VPS
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.AZURE_HOST }}
-          username: ${{ secrets.AZURE_USER }}
-          password: ${{ secrets.AZURE_VM_PASSWORD }}
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
           SOURCE: './'
-          TARGET: /home/mihir31/temp-dir/
+          TARGET: /root/
           script: |
-            cd /home/mihir31/temp-dir/
+            cd /root/
             echo "Hello this is Mihir & this is test file" >> test.txt
